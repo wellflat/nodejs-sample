@@ -49,11 +49,33 @@ export default ({ config, db }) => {
     });
 
     router.put('/:id', (req, res) => {
-
+        const data = {
+            name: 'test user (update)',
+            age: 11
+        };
+        const userId = req.params.id;
+        let updated = false;
+        db.transaction(trx => {
+            db('test').transacting(trx).where('id', userId).update(data).then(affected => {
+                updated = (affected == 1);
+            }).then(trx.commit).catch(trx.rollback)
+        }).then(result => {
+            if (updated) {
+                res.status(200).json({
+                    message: 'user update success',
+                    user_id: userId
+                });
+            } else {
+                res.status(404).json({ message: 'user not found' });
+            }
+        }).catch(err => {
+            console.error(err);
+            res.status(500).json({ message: 'internal db error' });
+        });
     });
 
     router.delete('/:id', (req, res) => {
-        let userId = req.params.id;
+        const userId = req.params.id;
         let deleted = false;
         db.transaction(trx => {
             db('test').transacting(trx).where('id', userId).del().then(affected => {
