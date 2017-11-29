@@ -18,15 +18,18 @@ app.use(cors({ exposedHeaders: config.corsHeaders }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: config.bodyLimit }));
 
-app.listen(process.env.PORT || config.port, () => {
-    connectDB(db => {
+app.listen(process.env.PORT || config.port, async () => {
+    try {
+        db = await connectDB();
         console.log(`Started on port ${config.port}`);
         // internal middleware
         app.use(middleware({ config, db }));
 
         // root entry point
         app.use('/', routes({ config, db }));
-    });
+    } catch(err) {
+        console.error(err);
+    }
 });
 
 export default app;
