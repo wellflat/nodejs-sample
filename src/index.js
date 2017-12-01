@@ -20,7 +20,7 @@ app.use(bodyParser.json({ limit: config.bodyLimit }));
 
 app.listen(process.env.PORT || config.port, async () => {
     try {
-        db = await connectDB();
+        const db = await connectDB();
         console.log(`Started on port ${config.port}`);
         // internal middleware
         app.use(middleware({ config, db }));

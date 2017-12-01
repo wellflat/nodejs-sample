@@ -16,11 +16,11 @@ export default connectDB => {
                 filename: './test.db'
             };
             db = knex(credentilas);
-            if (db == null) {
-                reject("db connection error");
-                return;
-            }
+            db.raw('SELECT 1 AS dbIsUp').then(() => {
+                resolve(db);
+            }).catch(err => {
+                reject(err);
+            });
         }
-        return resolve(db);
     });
 };
