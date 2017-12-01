@@ -4,27 +4,29 @@ import { check, validationResult } from 'express-validator/check';
 export default ({ config, db }) => {
     const router = Router();
 
-    router.get('/', (req, res) => {
-        db('test').then(rows => {
+    router.get('/', async (req, res) => {
+        try {
+            const rows = await db('test');
             res.status(200).json({ results: rows });
-        }).catch(err => {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'select error' });
-        });
+        }
     });
 
-    router.get('/:id', (req, res) => {
-        const userId = req.params.id;
-        db('test').where('id', userId).then(rows => {
+    router.get('/:id', async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const rows = await db('test').where('id', userId);
             if (rows.length == 0) {
                 res.status(404).json({ message: 'user not found' });
             } else {
                 res.status(200).json(rows[0]);
             }
-        }).catch(err => {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'internal db error' });
-        })
+        }
     });
 
     router.post('/', (req, res) => {
