@@ -29,12 +29,35 @@ export default ({ config, db }) => {
         }
     });
 
-    router.post('/', (req, res) => {
-        const data = {
-            name: 'test user',
-            age: 10
-        };
-        let userId = null;
+    router.post('/', async (req, res) => {
+        try {
+            const data = {
+                name: 'test user',
+                age: 10
+            };
+            let userId = null;
+            await db.transaction(async trx => {
+                try {
+                    const id = await db('test').transacting(trx).insert(data);
+                    await trx.commit();
+                    userId = id[0];
+                } catch (err) {
+                    await trx.rollback();
+                    throw err;
+                }
+            });
+            console.log(userId);
+            res.status(201).json({
+                message: 'user regstration success',
+                user_id: userId
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'internal db error' });
+        }
+
+
+        /*
         db.transaction(trx => {
             db('test').transacting(trx).insert(data).then(inserted => {
                 userId = inserted[0];
@@ -48,6 +71,7 @@ export default ({ config, db }) => {
             console.error(err);
             res.status(500).json({ message: 'internal db error' });
         });
+        */
     });
 
     router.put('/:id', (req, res) => {
