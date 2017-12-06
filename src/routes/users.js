@@ -66,7 +66,7 @@ export default ({ config, db }) => {
             let updated = false;
             await db.transaction(async trx => {
                 try {
-                    const affected = db('test').transacting(trx).where('id', userId).update(data);
+                    const affected = await db('test').transacting(trx).where('id', userId).update(data);
                     updated = (affected == 1);
                     await trx.commit();
                 } catch (err) {
@@ -88,14 +88,20 @@ export default ({ config, db }) => {
         }
     });
 
-    router.delete('/:id', (req, res) => {
-        const userId = req.params.id;
-        let deleted = false;
-        db.transaction(trx => {
-            db('test').transacting(trx).where('id', userId).del().then(affected => {
-                deleted = (affected == 1);
-            }).then(trx.commit).catch(trx.rollback)
-        }).then(result => {
+    router.delete('/:id', async (req, res) => {
+        try {
+            const userId = req.params.id;
+            let deleted = false;
+            await db.transaction(async trx => {
+                try {
+                    const affected = await db('test').transacting(trx).where('id', userId).del();
+                    deleted = (affected == 1);
+                    await trx.commit();
+                } catch (err) {
+                    await trx.rollback();
+                    throw err;
+                }
+            });
             if (deleted) {
                 res.status(200).json({
                     message: 'user deletion success',
@@ -104,10 +110,10 @@ export default ({ config, db }) => {
             } else {
                 res.status(404).json({ message: 'user not found' });
             }
-        }).catch(err => {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'internal db error' });
-        });
+        }
     });
 
     return router;
