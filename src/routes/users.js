@@ -46,7 +46,6 @@ export default ({ config, db }) => {
                     throw err;
                 }
             });
-            console.log(userId);
             res.status(201).json({
                 message: 'user regstration success',
                 user_id: userId
@@ -55,37 +54,26 @@ export default ({ config, db }) => {
             console.error(err);
             res.status(500).json({ message: 'internal db error' });
         }
-
-
-        /*
-        db.transaction(trx => {
-            db('test').transacting(trx).insert(data).then(inserted => {
-                userId = inserted[0];
-            }).then(trx.commit).catch(trx.rollback)
-        }).then(result => {
-            res.status(201).json({
-                message: 'user regstration success',
-                user_id: userId
-            });
-        }).catch(err => {
-            console.error(err);
-            res.status(500).json({ message: 'internal db error' });
-        });
-        */
     });
 
-    router.put('/:id', (req, res) => {
-        const data = {
-            name: 'test user (update)',
-            age: 11
-        };
-        const userId = req.params.id;
-        let updated = false;
-        db.transaction(trx => {
-            db('test').transacting(trx).where('id', userId).update(data).then(affected => {
-                updated = (affected == 1);
-            }).then(trx.commit).catch(trx.rollback)
-        }).then(result => {
+    router.put('/:id', async (req, res) => {
+        try {
+            const data = {
+                name: 'test user (update)',
+                age: 11
+            };
+            const userId = req.params.id;
+            let updated = false;
+            await db.transaction(async trx => {
+                try {
+                    const affected = db('test').transacting(trx).where('id', userId).update(data);
+                    updated = (affected == 1);
+                    await trx.commit();
+                } catch (err) {
+                    await trx.rollback();
+                    throw err;
+                }
+            });
             if (updated) {
                 res.status(200).json({
                     message: 'user update success',
@@ -94,10 +82,10 @@ export default ({ config, db }) => {
             } else {
                 res.status(404).json({ message: 'user not found' });
             }
-        }).catch(err => {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'internal db error' });
-        });
+        }
     });
 
     router.delete('/:id', (req, res) => {
