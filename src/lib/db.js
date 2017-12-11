@@ -1,5 +1,4 @@
 import knex from 'knex';
-import mockKnex from 'mock-knex';
 
 export default connectDB => {
     return new Promise((resolve, reject) => {
@@ -8,19 +7,19 @@ export default connectDB => {
         };
         let db = null;
         if (process.env.NODE_ENV === 'test') {
-            credentilas.connection = {};
-            db = knex(credentilas);
-            mockKnex.mock(db);
+            credentilas.connection = {
+                filename: './test.db'
+            };
         } else {
             credentilas.connection = {
                 filename: './test.db'
             };
-            db = knex(credentilas);
-            db.raw('SELECT 1 AS dbIsUp').then(() => {
-                resolve(db);
-            }).catch(err => {
-                reject(err);
-            });
         }
+        db = knex(credentilas);
+        db.raw('SELECT 1 AS dbIsUp').then(() => {
+            resolve(db);
+        }).catch(err => {
+            reject(err);
+        });
     });
 };
