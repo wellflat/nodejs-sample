@@ -4,14 +4,14 @@
   "description": "Starter Node.js sample project",
   "main": "dst",
   "directories": {
-    "test": "src/test/"
+    "test": "test/"
   },
   "scripts": {
     "dev": "nodemon -w src --exec \"babel-node src\"",
     "build": "babel src -s -D -d dst",
     "start": "node dst",
     "prestart": "npm run -s build",
-    "test": "mocha --compilers js:babel-register src/test/user.spec.js",
+    "test": "mocha --compilers js:babel-register test/user.spec.js",
     "_test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive $(find test -name '*.spec.js')"
   },
   "eslintConfig": {
