@@ -14,16 +14,6 @@
     "test": "mocha --compilers js:babel-register test/user.spec.js",
     "_test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive $(find test -name '*.spec.js')"
   },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-    },
-    "env": {
-      "node": true
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wellflat/nodejs-sample.git"
@@ -51,7 +41,6 @@
     "mocha": "^4.0.1",
     "mock-knex": "^0.3.9",
     "nodemon": "^1.9.2",
-    "power-assert": "^1.4.4",
     "source-map-support": "^0.5.0"
   },
   "bugs": {

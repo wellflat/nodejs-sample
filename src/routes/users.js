@@ -47,7 +47,7 @@ export default ({ config, db }) => {
                 }
             });
             res.status(201).json({
-                message: 'user regstration success',
+                message: 'user registration success',
                 user_id: userId
             });
         } catch (err) {
