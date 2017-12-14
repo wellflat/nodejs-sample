@@ -7,7 +7,14 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('/user', () => {
-    
+    before(() => {
+        console.log('starting.');
+    });
+
+    after(() => {
+        console.log('test complete.');
+    })
+
     it('should return the all user data', (done) => {
         chai.request(app)
         .get('/user')
