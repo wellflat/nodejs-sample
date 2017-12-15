@@ -6,7 +6,7 @@ import app from '../src/index';
 
 chai.use(chaiHttp);
 
-describe('/user', () => {
+describe('/', () => {
     let requester = null;
 
     before(() => {
@@ -16,17 +16,11 @@ describe('/user', () => {
     after(() => {
     })
 
-    it('should return the all user data', (done) => {
-        requester.get('/user').end((err, res) => {
+    it('should return a json response', (done) => {
+        requester.get('/').end((err, res) => {
             assert.equal(res.status, 200);
-            done();
-        });
-    });
-
-    it('should registration a user data', (done) => {
-        const data = { name: 'test user', age: 20 };
-        requester.post('/user').send(data).end((err, res) => {
-            assert.equal(res.status, 201);
+            const expected = { name: 'node sample' };
+            assert.deepEqual(res.body, expected);
             done();
         });
     });

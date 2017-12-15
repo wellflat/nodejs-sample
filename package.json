@@ -11,7 +11,7 @@
     "build": "babel src -s -D -d dst",
     "start": "node dst",
     "prestart": "npm run -s build",
-    "test": "mocha --exit --compilers js:babel-register test/user.spec.js",
+    "test": "mocha --exit --compilers js:babel-register --recursive $(find test -name '*.spec.js') ",
     "_test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive $(find test -name '*.spec.js')",
     "debug": "npm run -s build && node --nolazy --inspect-brk=9229 dst"
   },
