@@ -1,35 +1,34 @@
 import mocha from 'mocha';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import assert from 'power-assert';
 import app from '../src/index';
 
 chai.use(chaiHttp);
-const expect = chai.expect;
 
 describe('/user', () => {
+    let requester = null;
+
     before(() => {
-        console.log('starting.');
+        console.log('----- test start -----');
+        requester = chai.request(app);
     });
 
     after(() => {
-        console.log('test complete.');
+        console.log('----- test complete -----');
     })
 
     it('should return the all user data', (done) => {
-        chai.request(app)
-        .get('/user')
-        .end((err, res) => {
-            expect(res).to.have.status(200);
+        requester.get('/user').end((err, res) => {
+            assert.equal(res.status, 200);
             done();
         });
     });
 
     it('should registration a user data', (done) => {
-        chai.request(app)
-        .post('/user')
-        .send({ name: 'test user', age: 20 })
-        .end((err, res) => {
-            expect(res).to.have.status(201);
+        const data = { name: 'test user', age: 20 };
+        requester.post('/user').send(data).end((err, res) => {
+            assert.equal(res.status, 201);
             done();
         });
     });

@@ -12,7 +12,8 @@
     "start": "node dst",
     "prestart": "npm run -s build",
     "test": "mocha --exit --compilers js:babel-register test/user.spec.js",
-    "_test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive $(find test -name '*.spec.js')"
+    "_test": "NODE_ENV=test mocha --compilers js:babel-core/register --recursive $(find test -name '*.spec.js')",
+    "debug": "npm run -s build && node --nolazy --inspect-brk=9229 dst"
   },
   "repository": {
     "type": "git",
@@ -37,10 +38,10 @@
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
-    "eslint": "^3.1.1",
+    "eslint": "^3.19.0",
     "mocha": "^4.0.1",
-    "mock-knex": "^0.3.9",
     "nodemon": "^1.9.2",
+    "power-assert": "^1.4.4",
     "source-map-support": "^0.5.0"
   },
   "bugs": {
