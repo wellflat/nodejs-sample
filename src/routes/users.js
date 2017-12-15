@@ -10,7 +10,8 @@ export default ({ config, db }) => {
             res.status(200).json({ results: rows });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ message: 'select error' });
+            throw err;
+            //res.status(500).json({ message: 'select error' });
         }
     });
 
