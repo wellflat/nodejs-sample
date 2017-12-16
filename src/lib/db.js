@@ -8,11 +8,11 @@ export default connectDB => {
         let db = null;
         if (process.env.NODE_ENV === 'test') {
             credentilas.connection = {
-                filename: './test.db'
+                filename: './resource/test.db'
             };
         } else {
             credentilas.connection = {
-                filename: './test.db'
+                filename: './resource/test.db'
             };
         }
         db = knex(credentilas);

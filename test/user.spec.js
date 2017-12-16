@@ -8,6 +8,7 @@ chai.use(chaiHttp);
 
 describe('/user', () => {
     let requester = null;
+    const path = '/user';
 
     before(() => {
         requester = chai.request(app);
@@ -17,17 +18,43 @@ describe('/user', () => {
     })
 
     it('should return the all user data', (done) => {
-        requester.get('/user').end((err, res) => {
+        requester.get(path).end((err, res) => {
             assert.equal(res.status, 200);
             done();
         });
     });
 
-    it('should registration a user data', (done) => {
+    it('should regist a user data', (done) => {
         const data = { name: 'test user', age: 20 };
-        requester.post('/user').send(data).end((err, res) => {
+        requester.post(path).send(data).end((err, res) => {
             assert.equal(res.status, 201);
             done();
         });
     });
+});
+
+describe('/user/:id', () => {
+    let requester = null;
+    const path = '/user/20';
+
+    before(() => {
+        requester = chai.request(app);
+    });
+
+    after(() => {
+    })
+
+    it('should return a user data', (done) => {
+        requester.get(path).end((err, res) => {
+            assert.equal(res.status, 200);
+            const expected = {
+                id: 20,
+                name: "test user",
+                age: 10
+            };
+            assert.deepEqual(res.body, expected);
+            done();
+        });
+    });
+
 });
