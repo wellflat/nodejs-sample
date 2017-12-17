@@ -8,11 +8,5 @@ export default ({ config, db }) => {
         next();
     });
 
-    // @todo implement
-    router.use((err, req, res, next) => {
-        console.error(err);
-        res.status(500).json({ message: err });
-    });
-
     return router;
 };

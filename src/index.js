@@ -28,6 +28,13 @@ app.listen(process.env.PORT || config.port, async () => {
 
         // root entry point
         app.use('/', routes({ config, db }));
+
+        // error middleware
+        app.use((err, req, res, next) => {
+            console.log(err);
+            res.status(500).json({ message: err.message });
+        });
+
     } catch(err) {
         console.error(err);
     }

@@ -4,14 +4,13 @@ import { check, validationResult } from 'express-validator/check';
 export default ({ config, db }) => {
     const router = Router();
 
-    router.get('/', async (req, res) => {
+    router.get('/', async (req, res, next) => {
         try {
             const rows = await db('test');
             res.status(200).json({ results: rows });
         } catch (err) {
             console.error(err);
-            throw err;
-            //res.status(500).json({ message: 'select error' });
+            res.status(500).json({ message: 'internal db error' });
         }
     });
 
@@ -33,8 +32,8 @@ export default ({ config, db }) => {
     router.post('/', async (req, res) => {
         try {
             const data = {
-                name: 'test user',
-                age: 10
+                name: req.body.name,
+                age: req.body.age
             };
             let userId = null;
             await db.transaction(async trx => {
@@ -60,8 +59,8 @@ export default ({ config, db }) => {
     router.put('/:id', async (req, res) => {
         try {
             const data = {
-                name: 'test user (update)',
-                age: 11
+                name: req.body.name,
+                age: req.body.age
             };
             const userId = req.params.id;
             let updated = false;
