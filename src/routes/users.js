@@ -4,7 +4,7 @@ import { check, validationResult } from 'express-validator/check';
 export default ({ config, db }) => {
     const router = Router();
 
-    router.get('/', async (req, res, next) => {
+    router.get('/', async (req, res) => {
         try {
             const rows = await db('test');
             res.status(200).json({ results: rows });

@@ -5,14 +5,16 @@ import bodyParser from 'body-parser';
 
 import connectDB from './lib/db';
 import middleware from './middleware';
+import { errorHandler } from './middleware/error';
 import routes from './routes';
 import config from './config.json';
+
 import sourcemap from 'source-map-support';
 sourcemap.install();
 
 const app = express();
 
-// middleware binding
+// global middleware binding
 app.use(morgan('dev'));
 app.use(cors({ exposedHeaders: config.corsHeaders }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +24,6 @@ app.listen(process.env.PORT || config.port, async () => {
     try {
         const db = await connectDB();
         console.log(`Started on port ${config.port}`);
-
         // internal middleware
         app.use(middleware({ config, db }));
 
@@ -30,10 +31,7 @@ app.listen(process.env.PORT || config.port, async () => {
         app.use('/', routes({ config, db }));
 
         // error middleware
-        app.use((err, req, res, next) => {
-            console.log(err);
-            res.status(500).json({ message: err.message });
-        });
+        app.use(errorHandler);
 
     } catch(err) {
         console.error(err);

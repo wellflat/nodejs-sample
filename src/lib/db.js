@@ -12,7 +12,7 @@ export default connectDB => {
             };
         } else {
             credentilas.connection = {
-                filename: './resource/test.db'
+                filename: './resource/user.db'
             };
         }
         db = knex(credentilas);
