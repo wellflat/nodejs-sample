@@ -28,6 +28,7 @@ describe('/user', () => {
         const data = { name: 'test user', age: 20 };
         requester.post(path).send(data).end((err, res) => {
             assert.equal(res.status, 201);
+            assert.ok(res.body.user_id, "returns user_id");
             done();
         });
     });
