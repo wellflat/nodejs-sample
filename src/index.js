@@ -14,6 +14,7 @@ import sourcemap from 'source-map-support';
 sourcemap.install();
 
 const app = express();
+app.disable('x-powered-by');
 
 // global middleware binding
 app.use(morgan('dev'));
