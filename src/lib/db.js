@@ -1,21 +1,22 @@
 import knex from 'knex';
+import mysql from 'mysql2';
 
 export default connectDB => {
     return new Promise((resolve, reject) => {
-        let credentilas = {
+        let credentials = {
             client: 'sqlite3'
         };
         let db = null;
         if (process.env.NODE_ENV === 'test') {
-            credentilas.connection = {
+            credentials.connection = {
                 filename: './resource/test.db'
             };
         } else {
-            credentilas.connection = {
+            credentials.connection = {
                 filename: './resource/user.db'
             };
         }
-        db = knex(credentilas);
+        db = knex(credentials);
         db.raw('SELECT 1 AS dbIsUp').then(() => {
             resolve(db);
         }).catch(err => {
@@ -23,3 +24,20 @@ export default connectDB => {
         });
     });
 };
+
+
+export  function connectMySQL() {
+    let credentials = {
+        host: 'localhost',
+        user: 'root',
+        password: 'password'
+    };
+    if (process.env.NODE_ENV === 'test') {
+        credentials.host = 'localhost';
+    } else {
+        credentials.host = '';
+    }
+    const db = mysql.createConnection(credentials);
+    db.connect()
+    return db;
+}

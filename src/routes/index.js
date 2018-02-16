@@ -7,7 +7,8 @@ export default ({ config, db }) => {
     router.use('/user', users({ config, db }));
 
     router.get('/', (req, res) => {
-        res.status(200).json({ name: "node sample"});
+        console.log(req.session.user);
+        res.status(200).json({ name: "node sample" });
     });
 
     return router;
