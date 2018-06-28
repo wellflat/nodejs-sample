@@ -20,7 +20,7 @@ app.disable('x-powered-by');
 app.use(morgan('dev'));
 app.use(cors({ exposedHeaders: config.corsHeaders }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: config.bodyLimit }));
+app.use(bodyParser.json({ limit: config.bodyLimit,  type: 'application/*+json' }));
 app.use(session({
     secret: 'your secret key',
     resave: false,

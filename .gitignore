@@ -1,5 +1,7 @@
 /dst
 /logs
+/uploads
+/resource
 /npm-debug.log
 /node_modules
 .DS_Store

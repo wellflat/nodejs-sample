@@ -26,7 +26,7 @@ export default connectDB => {
 };
 
 
-export  function connectMySQL() {
+export function connectMySQL() {
     let credentials = {
         host: 'localhost',
         user: 'root',
