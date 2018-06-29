@@ -1,5 +1,6 @@
 {
 	"port": 8080,
 	"bodyLimit": "500kb",
-	"corsHeaders": ["Link"]
+	"corsHeaders": ["Link"],
+	"bucket": "rest-term"
 }
