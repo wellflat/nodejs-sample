@@ -30,7 +30,7 @@
     "express-session": "^1.15.6",
     "express-validator": "^4.2.1",
     "knex": "^0.13.0",
-    "morgan": "^1.8.0",
+    "morgan": "^1.9.1",
     "multer": "^1.3.1",
     "multer-s3": "^2.7.0",
     "mysql2": "^1.5.1",
