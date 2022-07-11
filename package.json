@@ -22,7 +22,7 @@
   "author": "wellflat",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.265.1",
+    "aws-sdk": "^2.814.0",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
