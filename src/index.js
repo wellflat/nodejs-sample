@@ -32,6 +32,21 @@ app.use(session({
     }
 }));
 
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  res.statusCode = 500;
+  // Do not expose your error in production
+  res.json({ error: err.message });
+  next();
+});
+
 app.listen(process.env.PORT || config.port, async () => {
     try {
         const db = await connectDB();
@@ -47,5 +62,21 @@ app.listen(process.env.PORT || config.port, async () => {
         process.exit(-1);
     }
 });
+
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  // clearInterval(metricsInterval);
+
+  server.close((err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    process.exit(0);
+  });
+});
+
 
 export default app;
